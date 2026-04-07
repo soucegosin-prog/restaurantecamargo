@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="pageTitle">Restaurante Camargo | Marmitas e pedidos no WhatsApp</title>
+  <meta name="description" id="pageDescription" content="Peça marmitas, pratos feitos e bebidas do Restaurante Camargo direto pelo WhatsApp." />
+  <meta name="theme-color" content="#a51414" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #120807;
+      --bg-2: #1a0d0b;
+      --bg-3: #25100d;
+      --line: rgba(255,255,255,0.09);
+      --text: #fff8f4;
+      --muted: #e7d5cb;
+      --muted-2: #cdb9ae;
+      --primary: #a51414;
+      --primary-2: #d72e2e;
+      --accent: #ffc447;
+      --accent-2: #ffe29a;
+      --green: #25d366;
+      --shadow: 0 24px 80px rgba(0,0,0,0.32);
+      --container: 1240px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,196,71,0.08), transparent 18%),
+        radial-gradient(circle at top right, rgba(215,46,46,0.12), transparent 22%),
+        linear-gradient(180deg, #120807 0%, #160907 28%, #1b0b08 100%);
+      overflow-x: hidden;
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+    button, input, textarea, select { font: inherit; }
+    .container { width: min(100% - 28px, var(--container)); margin: 0 auto; }
+    .section { padding: 64px 0; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: #fff4ef; font-size: .92rem;
+      font-weight: 800; margin-bottom: 18px; backdrop-filter: blur(10px);
+    }
+    .section-head { max-width: 760px; margin: 0 auto 28px; text-align: center; }
+    .section-head h2 { font-size: clamp(2rem, 4.2vw, 3.3rem); line-height: 1.02; letter-spacing: -0.05em; margin-bottom: 10px; }
+    .section-head p { color: var(--muted); font-size: 1.02rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 24px;
+      border-radius: 999px; border: 1px solid transparent; cursor: pointer; font-weight: 800; white-space: nowrap;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: #fff8f2; background: linear-gradient(135deg, var(--primary), var(--primary-2)); box-shadow: 0 18px 34px rgba(215,46,46,0.22); }
+    .btn-secondary { color: #fff; background: rgba(255,255,255,0.06); border-color: var(--line); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .btn-whatsapp { color: #fff; background: linear-gradient(135deg, #22c55e, #25d366); box-shadow: 0 18px 34px rgba(37,211,102,.22); }
+    .header { position: sticky; top: 0; z-index: 1500; border-bottom: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(14px); background: rgba(16, 7, 6, 0.8); }
+    .nav { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .brand-logo { width: 58px; height: 58px; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); flex-shrink: 0; box-shadow: 0 14px 28px rgba(0,0,0,.22); }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-text strong { display: block; font-size: .98rem; line-height: 1.1; letter-spacing: .02em; }
+    .brand-text span { display: block; color: var(--muted-2); font-size: .84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .menu { display: flex; align-items: center; gap: 24px; }
+    .menu a { color: #fff1ea; font-weight: 700; }
+    .menu-toggle { display: none; width: 48px; height: 48px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: #fff; cursor: pointer; font-size: 1.1rem; }
+    .mobile-panel { display: none; padding: 0 0 16px; }
+    .mobile-panel.open { display: block; }
+    .mobile-links { display: grid; gap: 10px; padding: 16px; border-radius: 22px; border: 1px solid var(--line); background: rgba(24,10,8,.96); }
+    .mobile-links a { padding: 12px 10px; border-radius: 12px; font-weight: 700; }
+    .hero { position: relative; min-height: 95vh; display: flex; align-items: center; justify-content: center; padding: 34px 0 48px; overflow: hidden; isolation: isolate; }
+    .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,5,5,0.18) 0%, rgba(16,7,6,0.58) 35%, rgba(18,8,7,0.94) 100%); z-index: 1; }
+    .hero::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at center top, rgba(255,196,71,0.08), transparent 20%), radial-gradient(circle at bottom right, rgba(215,46,46,0.14), transparent 22%); z-index: 2; pointer-events: none; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.7) brightness(.42) contrast(1.04); transform: scale(1.06); }
+    .hero-inner { position: relative; z-index: 3; width: min(100% - 28px, 980px); margin: 0 auto; text-align: center; }
+    .hero-logo-center { width: 138px; height: 138px; margin: 0 auto 22px; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,0.08); border: 3px solid rgba(255,255,255,0.14); box-shadow: 0 22px 50px rgba(0,0,0,.36); backdrop-filter: blur(10px); }
+    .hero-logo-center img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-top-label { display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fff4ed; font-size: .94rem; font-weight: 800; margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(3rem, 7vw, 6rem); line-height: .92; letter-spacing: -.07em; margin-bottom: 16px; text-shadow: 0 8px 28px rgba(0,0,0,.26); }
+    .hero p { max-width: 760px; margin: 0 auto 28px; color: #f0e0d7; font-size: clamp(1rem, 2.4vw, 1.18rem); text-shadow: 0 4px 18px rgba(0,0,0,.22); }
+    .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; }
+    .hero-highlights { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; max-width: 880px; margin: 0 auto; }
+    .hero-badge { padding: 11px 15px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.11); background: rgba(255,255,255,0.05); color: #fff4ef; font-size: .92rem; font-weight: 700; backdrop-filter: blur(8px); }
+    .tabs { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
+    .tab-btn { min-height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.05); color: #fff; font-weight: 800; cursor: pointer; transition: .2s ease; }
+    .tab-btn.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #35190a; border-color: transparent; box-shadow: 0 14px 28px rgba(255,196,71,.16); }
+    .catalog-panel { display: none; }
+    .catalog-panel.active { display: block; }
+    .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .catalog-grid.two-cols { grid-template-columns: repeat(2, 1fr); }
+    .product-card { overflow: hidden; border-radius: 26px; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04)); box-shadow: var(--shadow); display: flex; flex-direction: column; min-width: 0; }
+    .product-image { position: relative; min-height: 312px; overflow: hidden; background: rgba(255,255,255,0.03); }
+    .product-image.tall { min-height: 390px; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+    .product-card:hover .product-image img { transform: scale(1.05); }
+    .product-tag { position: absolute; top: 14px; left: 14px; z-index: 2; padding: 8px 12px; border-radius: 999px; background: rgba(20, 8, 7, .82); border: 1px solid rgba(255,255,255,.1); font-size: .8rem; font-weight: 800; }
+    .product-body { padding: 20px; display: grid; gap: 10px; flex: 1; }
+    .product-body h3 { font-size: 1.08rem; line-height: 1.15; }
+    .product-body p { color: var(--muted); font-size: .95rem; }
+    .price { color: var(--accent); font-size: 1.05rem; font-weight: 900; letter-spacing: -.02em; }
+    .ordering-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .flow-card { padding: 24px; border-radius: 26px; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); box-shadow: var(--shadow); text-align: center; }
+    .flow-step { width: 58px; height: 58px; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--primary-2)); box-shadow: 0 14px 28px rgba(215,46,46,.24); font-size: 1.12rem; font-weight: 900; margin-bottom: 14px; }
+    .flow-card h3 { font-size: 1.12rem; margin-bottom: 8px; }
+    .flow-card p { color: var(--muted); font-size: .96rem; }
+    .about-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: 22px; align-items: stretch; }
+    .about-card, .location-card, .cta-band { padding: 28px; border-radius: 28px; border: 1px solid var(--line); background: radial-gradient(circle at top right, rgba(255,196,71,0.08), transparent 18%), linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04)); box-shadow: var(--shadow); }
+    .about-card h3, .location-card h3, .cta-band h3 { font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1.04; letter-spacing: -.04em; margin-bottom: 10px; }
+    .about-card p, .location-card p, .cta-band p { color: var(--muted); }
+    .info-stack { display: grid; gap: 14px; margin-top: 20px; }
+    .info-item { padding: 16px 18px; border-radius: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .info-item strong { display: block; margin-bottom: 4px; color: #fff7f3; font-size: .95rem; }
+    .map-embed { width: 100%; min-height: 360px; border: none; border-radius: 24px; margin-top: 18px; background: rgba(255,255,255,.04); }
+    .cta-band { display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap; }
+    .footer { padding: 36px 0; margin-top: 22px; background: rgba(13, 6, 5, .5); border-top: 1px solid rgba(255,255,255,0.08); }
+    .footer-wrap { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; }
+    .footer p, .footer a { color: var(--muted); }
+    .quick-modal { position: fixed; inset: 0; z-index: 2200; display: none; align-items: center; justify-content: center; padding: 18px; background: rgba(5,0,0,.72); backdrop-filter: blur(8px); }
+    .quick-modal.open { display: flex; }
+    .quick-modal-panel { width: min(100%, 1160px); max-height: min(94vh, 980px); overflow: auto; border-radius: 30px; border: 1px solid var(--line); background: radial-gradient(circle at top right, rgba(255,196,71,0.08), transparent 16%), linear-gradient(180deg, #22100c 0%, #180b08 100%); box-shadow: 0 30px 80px rgba(0,0,0,.52); }
+    .quick-modal-head { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(24,11,8,.96); backdrop-filter: blur(10px); }
+    .quick-modal-head h3 { font-size: 1.32rem; letter-spacing: -.03em; }
+    .close-modal { width: 46px; height: 46px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: #fff; cursor: pointer; font-size: 1.2rem; }
+    .quick-modal-body { padding: 24px; display: grid; grid-template-columns: .96fr 1.04fr; gap: 24px; align-items: start; }
+    .quick-preview { border-radius: 26px; overflow: hidden; border: 1px solid var(--line); background: rgba(255,255,255,0.04); box-shadow: var(--shadow); position: sticky; top: 96px; }
+    .quick-preview-image { min-height: 370px; background: rgba(255,255,255,0.03); }
+    .quick-preview-image img { width: 100%; height: 100%; object-fit: cover; }
+    .quick-preview-body { padding: 18px; }
+    .quick-preview-body h4 { font-size: 1.22rem; margin-bottom: 6px; }
+    .quick-preview-body p { color: var(--muted); font-size: .96rem; }
+    .order-form { display: grid; gap: 16px; }
+    .field { display: grid; gap: 8px; }
+    .field label { font-size: .95rem; font-weight: 800; color: #fff7f3; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 54px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.11); background: rgba(255,255,255,0.05); color: #fff; outline: none; padding: 0 16px; }
+    .field textarea { min-height: 110px; resize: vertical; padding: 16px; }
+    .field input::placeholder, .field textarea::placeholder { color: #bba29a; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: rgba(255,196,71,.56); box-shadow: 0 0 0 3px rgba(255,196,71,.14); }
+    .helper { color: var(--muted-2); font-size: .92rem; }
+    .options-grid { display: grid; gap: 10px; }
+    .option-chip { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04); }
+    .option-chip label { display: flex; align-items: center; gap: 10px; font-weight: 700; cursor: pointer; flex: 1; }
+    .option-chip input[type="checkbox"], .mini-chip input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); min-height: auto; padding: 0; }
+    .option-chip input[type="radio"] { width: 18px; height: 18px; accent-color: var(--accent); min-height: auto; padding: 0; }
+    .options-sections { display: grid; gap: 18px; }
+    .option-section { display: grid; gap: 10px; }
+    .option-section h5 { font-size: 1rem; color: #fff7f3; }
+    .option-section-note { color: var(--muted-2); font-size: .9rem; margin-top: -2px; }
+    .static-list { display: grid; gap: 10px; }
+    .static-chip { padding: 14px 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04); font-weight: 700; }
+    .info-item a { color: inherit; text-decoration: none; }
+    .remove-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .mini-chip { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04); font-weight: 700; }
+    .qty-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .qty-control { display: inline-flex; align-items: center; border-radius: 999px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05); overflow: hidden; }
+    .qty-control button { width: 46px; height: 46px; border: none; background: transparent; color: #fff; cursor: pointer; font-size: 1.2rem; font-weight: 800; }
+    .qty-value { min-width: 48px; text-align: center; font-weight: 800; }
+    .delivery-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .delivery-btn { min-height: 54px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04); color: #fff; cursor: pointer; font-weight: 800; }
+    .delivery-btn.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #35190a; border-color: transparent; }
+    .address-grid { display: grid; grid-template-columns: 1.1fr .55fr; gap: 12px; }
+    .address-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .summary-box { padding: 22px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); margin-top: 4px; }
+    .summary-box h4 { font-size: 1rem; margin-bottom: 10px; }
+    .summary-line { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; font-size: .96rem; margin-bottom: 12px; }
+    .summary-line span:first-child { color: #fff; font-weight: 700; min-width: 112px; }
+    .summary-line span:last-child { color: var(--muted); text-align: right; flex: 1; word-break: break-word; }
+    .divider { height: 1px; background: rgba(255,255,255,0.10); margin: 16px 0; }
+    .summary-total { display: flex; justify-content: space-between; gap: 12px; font-size: 1.12rem; font-weight: 900; margin-bottom: 6px; }
+    .map-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .whatsapp-float { position: fixed; right: 18px; bottom: 18px; width: 62px; height: 62px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #25d366; color: #fff; font-size: 1.5rem; box-shadow: 0 20px 34px rgba(37,211,102,.26); z-index: 1600; }
+    .reveal { opacity: 0; transform: translateY(28px) scale(.985); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    @media (max-width: 1120px) {
+      .catalog-grid, .ordering-flow, .about-grid, .quick-modal-body { grid-template-columns: repeat(2, 1fr); }
+      .catalog-grid.two-cols, .about-grid, .quick-modal-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 920px) {
+      .menu, .header-cta { display: none; }
+      .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+      .nav { min-height: 76px; }
+      .hero { min-height: auto; padding: 28px 0 24px; }
+      .hero-inner { width: min(100% - 20px, 760px); }
+      .catalog-grid, .catalog-grid.two-cols, .ordering-flow, .quick-modal-body, .address-grid, .address-grid-2, .delivery-switch, .remove-grid { grid-template-columns: 1fr; }
+      .tabs { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+      .tabs::-webkit-scrollbar { display: none; }
+      .tab-btn { flex: 0 0 auto; }
+      .hero h1 { font-size: clamp(2.6rem, 12vw, 4.5rem); line-height: .98; }
+      .hero-actions { display: grid; }
+      .btn { width: 100%; }
+      .section { padding: 60px 0; }
+      .hero-logo-center { width: 110px; height: 110px; }
+      .product-image, .product-image.tall, .quick-preview-image { min-height: auto; }
+      .product-image { aspect-ratio: 4 / 4.9; }
+      .product-image.tall { aspect-ratio: 4 / 5.1; }
+      .quick-preview-image { aspect-ratio: 4 / 4.8; }
+      .quick-preview { position: relative; top: auto; }
+    }
+    @media (max-width: 560px) {
+      .container { width: min(100% - 20px, var(--container)); }
+      .brand-logo { width: 50px; height: 50px; border-radius: 16px; }
+      .brand-text strong { font-size: .93rem; }
+      .brand-text span { font-size: .78rem; }
+      .hero-logo-center { width: 92px; height: 92px; margin-bottom: 18px; }
+      .hero-top-label { font-size: .88rem; padding: 10px 14px; }
+      .hero p { font-size: 1rem; }
+      .product-body, .flow-card, .about-card, .location-card, .cta-band, .summary-box { padding-left: 18px; padding-right: 18px; }
+      .quick-modal-head { padding: 18px; }
+      .quick-modal-body { padding: 18px; }
+      .summary-line { flex-direction: column; gap: 6px; }
+      .summary-line span:first-child { min-width: auto; }
+      .summary-line span:last-child { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="#inicio" class="brand" aria-label="Restaurante">
+          <div class="brand-logo"><img id="brandLogo" src="" alt="Logo" /></div>
+          <div class="brand-text">
+            <strong id="brandName"></strong>
+            <span id="brandSubtitle"></span>
+          </div>
+        </a>
+        <div class="menu">
+          <a href="#inicio">Início</a>
+          <a href="#pedidos">Cardápio</a>
+          <a href="#como-pedir">Como pedir</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#localizacao">Localização</a>
+        </div>
+        <a class="btn btn-primary header-cta" href="#pedidos">Ver cardápio</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+      </nav>
+      <div class="mobile-panel" id="mobilePanel">
+        <div class="mobile-links">
+          <a href="#inicio">Início</a>
+          <a href="#pedidos">Cardápio</a>
+          <a href="#como-pedir">Como pedir</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#localizacao">Localização</a>
+          <a class="btn btn-primary" href="#pedidos">Ver cardápio</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-bg"><img id="heroImage" src="" alt="Imagem principal" /></div>
+      <div class="hero-inner reveal">
+        <div class="hero-logo-center"><img id="heroLogo" src="" alt="Logo central" /></div>
+        <div class="hero-top-label" id="heroTopLabel"></div>
+        <h1 id="heroTitle"></h1>
+        <p id="heroDescription"></p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#pedidos">Pedir agora</a>
+          <a class="btn btn-secondary" href="#localizacao">Ver localização</a>
+        </div>
+        <div class="hero-highlights" id="heroHighlights"></div>
+      </div>
+    </section>
+
+    <section class="section" id="pedidos">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">Cardápio</div>
+          <h2 id="menuSectionTitle"></h2>
+          <p id="menuSectionDescription"></p>
+        </div>
+        <div class="tabs reveal" id="tabsContainer"></div>
+        <div id="panelsContainer"></div>
+      </div>
+    </section>
+
+    <section class="section" id="como-pedir">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">Como pedir</div>
+          <h2 id="stepsTitle"></h2>
+          <p id="stepsDescription"></p>
+        </div>
+        <div class="ordering-flow" id="stepsContainer"></div>
+      </div>
+    </section>
+
+    <section class="section" id="sobre">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-card reveal">
+            <div class="eyebrow">Sobre o restaurante</div>
+            <h3 id="aboutTitle"></h3>
+            <p id="aboutDescription"></p>
+            <div class="info-stack" id="aboutHighlights"></div>
+          </div>
+          <div class="location-card reveal" id="localizacao">
+            <div class="eyebrow">Localização e atendimento</div>
+            <h3 id="locationTitle"></h3>
+            <p id="locationDescription"></p>
+            <div class="info-stack" id="locationInfo"></div>
+            <div class="map-actions">
+              <a class="btn btn-secondary" id="mapsButton" href="#" target="_blank" rel="noopener noreferrer">Ver no Google Maps</a>
+              <a class="btn btn-whatsapp" id="whatsButton" href="#" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
+            </div>
+            <iframe class="map-embed" id="mapEmbed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="" title="Mapa"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band reveal">
+          <div>
+            <div class="eyebrow">Peça agora</div>
+            <h3 id="ctaTitle"></h3>
+            <p id="ctaDescription"></p>
+          </div>
+          <a class="btn btn-whatsapp" href="#pedidos">Montar pedido</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-wrap">
+      <div>
+        <p><strong id="footerName"></strong></p>
+        <p id="footerAddress"></p>
+      </div>
+      <div>
+        <p><a id="footerWhatsapp" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a> • <a id="footerInstagram" href="#" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+        <p id="footerInfo"></p>
+      </div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" id="floatWhatsapp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">✆</a>
+
+  <div class="quick-modal" id="quickModal" aria-hidden="true">
+    <div class="quick-modal-panel">
+      <div class="quick-modal-head">
+        <h3>Monte seu pedido</h3>
+        <button class="close-modal" type="button" id="closeModal" aria-label="Fechar">✕</button>
+      </div>
+      <div class="quick-modal-body">
+        <aside class="quick-preview">
+          <div class="quick-preview-image"><img id="modalItemImage" src="" alt="Item selecionado" /></div>
+          <div class="quick-preview-body"><h4 id="modalItemName">Item</h4><p id="modalItemDescription">Descrição do item.</p></div>
+        </aside>
+        <section class="order-form">
+          <div class="field"><label>Item selecionado</label><input type="text" id="selectedItem" readonly /></div>
+          <div class="field"><label>Categoria</label><input type="text" id="selectedCategory" readonly /></div>
+
+          <div class="field" id="addonsField">
+            <label id="addonsMainLabel">Adicionais</label>
+            <div class="options-sections" id="addonsContainer"></div>
+          </div>
+
+          <div class="field" id="removeField" style="display:none;">
+            <label>Remover ingredientes</label>
+            <div class="remove-grid" id="removeContainer"></div>
+          </div>
+
+          <div class="field"><label>Observações</label><textarea id="orderNotes" placeholder="Ex: sem cebola, retirar molho, ponto da carne, cortar em fatias..."></textarea></div>
+          <div class="field qty-row">
+            <div>
+              <label>Quantidade</label>
+              <div class="qty-control">
+                <button type="button" id="decreaseQty">−</button>
+                <div class="qty-value" id="qtyValue">1</div>
+                <button type="button" id="increaseQty">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Forma de entrega</label>
+            <div class="delivery-switch" style="grid-template-columns:1fr;">
+              <button type="button" class="delivery-btn active" data-delivery="entrega">Entrega</button>
+            </div>
+            <div class="helper">Preencha o endereço abaixo para enviar o pedido completo no WhatsApp.</div>
+          </div>
+
+          <div class="field">
+            <label>Forma de pagamento</label>
+            <select id="paymentMethod">
+              <option value="Pix">Pix</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
+            </select>
+          </div>
+
+          <div class="address-grid-2">
+            <div class="field"><label>Seu nome</label><input type="text" id="customerName" placeholder="Digite seu nome" /></div>
+            <div class="field"><label>Telefone</label><input type="text" id="customerPhone" placeholder="(62) 99999-9999" /></div>
+          </div>
+
+          <div id="addressFields" style="display:none;">
+            <div class="address-grid">
+              <div class="field"><label>Rua</label><input type="text" id="street" placeholder="Rua / Avenida" /></div>
+              <div class="field"><label>Número</label><input type="text" id="number" placeholder="Nº" /></div>
+            </div>
+            <div class="address-grid-2">
+              <div class="field"><label>Bairro</label><input type="text" id="district" placeholder="Seu bairro" /></div>
+              <div class="field"><label>Complemento</label><input type="text" id="complement" placeholder="Casa, apto, bloco..." /></div>
+            </div>
+            <div class="field"><label>Referência</label><input type="text" id="reference" placeholder="Ponto de referência" /></div>
+          </div>
+
+          <div class="summary-box">
+            <h4>Revisão do pedido</h4>
+            <div class="summary-line"><span>Item</span><span id="summaryItem">-</span></div>
+            <div class="summary-line"><span>Adicionais</span><span id="summaryAddons">Nenhum adicional</span></div>
+            <div class="summary-line" id="summaryRemovalsRow" style="display:none;"><span>Remover</span><span id="summaryRemovals">Nada removido</span></div>
+            <div class="summary-line"><span>Observações</span><span id="summaryNotes">Sem observações</span></div>
+            <div class="summary-line"><span>Quantidade</span><span id="summaryQty">1</span></div>
+            <div class="summary-line"><span>Entrega</span><span id="summaryDelivery">Entrega</span></div>
+            <div class="summary-line"><span>Pagamento</span><span id="summaryPayment">Pix</span></div>
+            <div class="summary-line"><span>Endereço</span><span id="summaryAddress">Preencha o endereço para entrega</span></div>
+            <div class="divider"></div>
+            <div class="summary-total"><span>Total</span><span id="summaryTotal">R$ 0,00</span></div>
+            <div class="helper" id="summaryMapText">Revise os dados de entrega e pagamento antes de enviar seu pedido.</div>
+          </div>
+
+          <div class="hero-actions" style="margin-bottom:0; justify-content:flex-start;">
+            <button class="btn btn-whatsapp" type="button" id="sendOrderBtn">Enviar pedido no WhatsApp</button>
+            <button class="btn btn-secondary" type="button" id="openAddressMapBtn">Abrir meu endereço no Google Maps</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    const APP_DATA = {
+      business: {
+        name: "Restaurante Camargo",
+        subtitle: "Marmitas e pratos feitos direto no WhatsApp",
+        pageTitle: "Restaurante Camargo | Marmitas e pedidos no WhatsApp",
+        pageDescription: "Restaurante Camargo em Aparecida de Goiânia com marmitas prontas, monte sua marmita, pratos feitos e bebidas. Monte seu pedido e envie direto pelo WhatsApp.",
+        heroTopLabel: "Aparecida de Goiânia - GO • Aberto • Fecha 17:00",
+        heroTitle: "Marmitas caprichadas para o dia a dia e para empresas.",
+        heroDescription: "Comida de qualidade, preço da região e pedido fácil pelo WhatsApp. Escolha a marmita pronta, monte do seu jeito ou peça seu prato feito com praticidade.",
+        heroImage: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1800&q=80",
+        logo: "logocamargo.png",
+        highlightBadges: [
+          "⭐ 4,7 • 156 avaliações",
+          "Até 15 min de espera",
+          "Foco em marmitas para empresas"
+        ],
+        address: "Esquina com - Av Brasília, R. Paracatu, Qd 56 - lt 03, Aparecida de Goiânia - GO, 74905-190",
+        whatsappNumber: "5562986434773",
+        whatsappText: "(62) 98643-4773",
+        instagram: "https://www.instagram.com/camargo_restaurante?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+        instagramText: "@camargo_restaurante",
+        mapsSearchLink: "https://www.google.com/maps/search/?api=1&query=Esquina%20com%20Av%20Bras%C3%ADlia%2C%20R.%20Paracatu%2C%20Qd%2056%20lt%2003%2C%20Aparecida%20de%20Goi%C3%A2nia%20-%20GO%2C%2074905-190",
+        mapsEmbed: "https://www.google.com/maps?q=Esquina%20com%20Av%20Bras%C3%ADlia%2C%20R.%20Paracatu%2C%20Qd%2056%20lt%2003%2C%20Aparecida%20de%20Goi%C3%A2nia%20-%20GO%2C%2074905-190&output=embed",
+        locationTitle: "Fácil de pedir e fácil de encontrar.",
+        locationDescription: "Atendimento rápido, endereço bem localizado e opções ideais para o almoço do dia a dia e pedidos corporativos.",
+        schedule: "Aberto • Fecha 17:00",
+        footerInfo: "Aberto • Fecha 17:00 • Marmitas prontas • Pratos feitos • Bebidas"
+      },
+
+      menuIntro: {
+        title: "Escolha seu pedido e personalize do jeito certo.",
+        description: "Marmitas prontas, monte sua marmita, pratos feitos e bebidas com revisão completa antes de enviar no WhatsApp."
+      },
+
+      stepsIntro: {
+        title: "Peça com rapidez e envie tudo certinho.",
+        description: "Escolha a categoria, revise os dados e envie diretamente para o WhatsApp do Restaurante Camargo."
+      },
+
+      steps: [
+        { number: "1", title: "Escolha a categoria", text: "Acesse marmitas prontas, monte sua marmita, pratos feitos ou bebidas e selecione a melhor opção para o seu almoço." },
+        { number: "2", title: "Personalize sem erro", text: "Na marmita montável você escolhe os acompanhamentos e apenas uma carne. Nos demais itens, selecione só os extras e bebidas quando quiser." },
+        { number: "3", title: "Revise e envie", text: "Confira quantidade, endereço, forma de pagamento e envie o pedido completo no WhatsApp do restaurante." }
+      ],
+
+      about: {
+        title: "Comida de qualidade, preço justo e praticidade no pedido.",
+        description: "O Restaurante Camargo atende quem busca refeição caprichada no dia a dia e também empresas que precisam de marmitas com agilidade, variedade e bom custo-benefício.",
+        highlights: [
+          { title: "Foco em marmitas para empresas", text: "Estrutura ideal para atender pedidos recorrentes, equipes e almoços do dia a dia com praticidade." },
+          { title: "Comida caseira e carnes bem servidas", text: "Refeições pensadas para agradar no sabor, na apresentação e no custo-benefício." },
+          { title: "Pedido simples no WhatsApp", text: "O cliente monta, revisa e envia o pedido com endereço e forma de pagamento em poucos passos." }
+        ]
+      },
+
+      cta: {
+        title: "Monte seu pedido e envie agora pelo WhatsApp.",
+        description: "Escolha a refeição ideal, revise tudo e fale direto com o Restaurante Camargo."
+      },
+
+      locationInfo: [
+        { title: "Endereço", text: "Esquina com - Av Brasília, R. Paracatu, Qd 56 - lt 03, Aparecida de Goiânia - GO, 74905-190" },
+        { title: "WhatsApp", text: "(62) 98643-4773", link: "https://wa.me/5562986434773" },
+        { title: "Instagram", text: "@camargo_restaurante", link: "https://www.instagram.com/camargo_restaurante?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+        { title: "Atendimento", text: "Aberto • Fecha 17:00" }
+      ],
+
+      beverageOptions: [
+        { name: "Coca-Cola Lata", price: 6.0 },
+        { name: "Guaraná Lata", price: 5.5 },
+        { name: "Suco Natural", price: 8.0 },
+        { name: "Água Mineral", price: 3.5 }
+      ],
+
+      monteMarmita: {
+        accompaniments: [
+          { name: "Arroz", price: 0 },
+          { name: "Feijão", price: 0 },
+          { name: "Macarrão", price: 0 },
+          { name: "Salada", price: 0 }
+        ],
+        proteins: [
+          { name: "Carne bovina", price: 0 },
+          { name: "Frango", price: 0 },
+          { name: "Carne suína", price: 0 },
+          { name: "Churrasco", price: 0 }
+        ],
+        extraProteins: [
+          { name: "Dobro de carne bovina", price: 6.0 },
+          { name: "Dobro de frango", price: 5.0 },
+          { name: "Dobro de carne suína", price: 5.0 },
+          { name: "Dobro de churrasco", price: 7.0 }
+        ]
+      },
+
+      categories: [
+        {
+          id: "marmitas-prontas",
+          label: "Marmitas prontas",
+          grid: "4",
+          items: [
+            {
+              tag: "Mais pedida",
+              name: "Marmita de Frango Pronta",
+              description: "Arroz, feijão, salada, frango e purê de batata em uma marmita pronta, prática e bem servida.",
+              included: ["Arroz", "Feijão", "Salada", "Frango", "Purê de batata"],
+              extraOption: { name: "Dobro de frango", price: 5.0 },
+              price: 20.0,
+              image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1000&q=80",
+              category: "Marmitas prontas",
+              modalType: "marmita-pronta"
+            },
+            {
+              tag: "Caseira",
+              name: "Marmita de Carne Bovina Pronta",
+              description: "Arroz, feijão, salada, carne bovina e purê de batata para um almoço caprichado e completo.",
+              included: ["Arroz", "Feijão", "Salada", "Carne bovina", "Purê de batata"],
+              extraOption: { name: "Dobro de carne bovina", price: 6.0 },
+              price: 22.0,
+              image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=80",
+              category: "Marmitas prontas",
+              modalType: "marmita-pronta"
+            },
+            {
+              tag: "Saborosa",
+              name: "Marmita de Porco Pronta",
+              description: "Arroz, feijão, salada, carne suína e purê de batata para quem gosta de uma refeição forte e saborosa.",
+              included: ["Arroz", "Feijão", "Salada", "Carne suína", "Purê de batata"],
+              extraOption: { name: "Dobro de carne suína", price: 5.0 },
+              price: 21.0,
+              image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?auto=format&fit=crop&w=1000&q=80",
+              category: "Marmitas prontas",
+              modalType: "marmita-pronta"
+            },
+            {
+              tag: "Destaque",
+              name: "Marmita de Churrasco Pronta",
+              description: "Arroz, feijão, salada, churrasco e purê de batata para uma opção ainda mais reforçada.",
+              included: ["Arroz", "Feijão", "Salada", "Churrasco", "Purê de batata"],
+              extraOption: { name: "Dobro de churrasco", price: 7.0 },
+              price: 24.0,
+              image: "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1000&q=80",
+              category: "Marmitas prontas",
+              modalType: "marmita-pronta"
+            }
+          ]
+        },
+
+        {
+          id: "monte-sua-marmita",
+          label: "Monte sua marmita",
+          grid: "4",
+          items: [
+            {
+              tag: "Monte do seu jeito",
+              name: "Monte sua Marmita P",
+              description: "Escolha os acompanhamentos, selecione apenas uma carne e finalize do seu jeito.",
+              price: 18.0,
+              image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=80",
+              category: "Monte sua marmita",
+              modalType: "monte-marmita"
+            },
+            {
+              tag: "Monte do seu jeito",
+              name: "Monte sua Marmita M",
+              description: "Tamanho ideal para quem quer mais sustância no almoço sem abrir mão da praticidade.",
+              price: 22.0,
+              image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80",
+              category: "Monte sua marmita",
+              modalType: "monte-marmita"
+            },
+            {
+              tag: "Monte do seu jeito",
+              name: "Monte sua Marmita G",
+              description: "Uma opção mais reforçada para quem gosta de uma refeição completa e bem servida.",
+              price: 26.0,
+              image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1000&q=80",
+              category: "Monte sua marmita",
+              modalType: "monte-marmita"
+            },
+            {
+              tag: "Empresa",
+              name: "Monte sua Marmita Empresa",
+              description: "Pensada para pedidos maiores, com praticidade para organizar refeições de equipes.",
+              price: 24.0,
+              image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1000&q=80",
+              category: "Monte sua marmita",
+              modalType: "monte-marmita"
+            }
+          ]
+        },
+
+        {
+          id: "pratos-feitos",
+          label: "Pratos feitos",
+          grid: "4",
+          items: [
+            {
+              tag: "Prato feito",
+              name: "PF de Frango",
+              description: "Arroz, feijão, salada, frango e purê de batata em uma opção clássica e bem servida.",
+              included: ["Arroz", "Feijão", "Salada", "Frango", "Purê de batata"],
+              price: 23.0,
+              image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1000&q=80",
+              category: "Pratos feitos",
+              modalType: "prato-feito"
+            },
+            {
+              tag: "Prato feito",
+              name: "PF de Carne Bovina",
+              description: "Arroz, feijão, salada, carne bovina e purê de batata em uma refeição bem servida.",
+              included: ["Arroz", "Feijão", "Salada", "Carne bovina", "Purê de batata"],
+              price: 25.0,
+              image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=80",
+              category: "Pratos feitos",
+              modalType: "prato-feito"
+            },
+            {
+              tag: "Prato feito",
+              name: "PF de Porco",
+              description: "Arroz, feijão, salada, carne suína e purê de batata para uma refeição saborosa e prática.",
+              included: ["Arroz", "Feijão", "Salada", "Carne suína", "Purê de batata"],
+              price: 22.0,
+              image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?auto=format&fit=crop&w=1000&q=80",
+              category: "Pratos feitos",
+              modalType: "prato-feito"
+            },
+            {
+              tag: "Prato feito",
+              name: "PF de Churrasco",
+              description: "Arroz, feijão, salada, churrasco e purê de batata para quem quer um almoço ainda mais reforçado.",
+              included: ["Arroz", "Feijão", "Salada", "Churrasco", "Purê de batata"],
+              price: 27.0,
+              image: "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1000&q=80",
+              category: "Pratos feitos",
+              modalType: "prato-feito"
+            }
+          ]
+        },
+
+        {
+          id: "bebidas",
+          label: "Bebidas",
+          grid: "4",
+          items: [
+            { tag: "Bebida", name: "Coca-Cola Lata", description: "Gelada e prática para acompanhar marmitas e pratos feitos.", price: 6.0, image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=1000&q=80", category: "Bebidas", modalType: "bebida" },
+            { tag: "Bebida", name: "Guaraná Lata", description: "Opção clássica para complementar seu almoço com mais refrescância.", price: 5.5, image: "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?auto=format&fit=crop&w=1000&q=80", category: "Bebidas", modalType: "bebida" },
+            { tag: "Bebida", name: "Suco Natural", description: "Mais leve e refrescante para quem prefere uma bebida natural no almoço.", price: 8.0, image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1000&q=80", category: "Bebidas", modalType: "bebida" },
+            { tag: "Bebida", name: "Água Mineral", description: "Água gelada para completar seu pedido com simplicidade.", price: 3.5, image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1000&q=80", category: "Bebidas", modalType: "bebida" }
+          ]
+        }
+      ]
+    };
+
+    const menuToggle = document.getElementById('menuToggle');
+    const mobilePanel = document.getElementById('mobilePanel');
+    const quickModal = document.getElementById('quickModal');
+    const closeModal = document.getElementById('closeModal');
+    const modalItemName = document.getElementById('modalItemName');
+    const modalItemDescription = document.getElementById('modalItemDescription');
+    const modalItemImage = document.getElementById('modalItemImage');
+    const selectedItem = document.getElementById('selectedItem');
+    const selectedCategory = document.getElementById('selectedCategory');
+    const orderNotes = document.getElementById('orderNotes');
+    const qtyValue = document.getElementById('qtyValue');
+    const decreaseQty = document.getElementById('decreaseQty');
+    const increaseQty = document.getElementById('increaseQty');
+    const deliveryButtons = document.querySelectorAll('.delivery-btn');
+    const addressFields = document.getElementById('addressFields');
+    const customerName = document.getElementById('customerName');
+    const customerPhone = document.getElementById('customerPhone');
+    const street = document.getElementById('street');
+    const number = document.getElementById('number');
+    const district = document.getElementById('district');
+    const complement = document.getElementById('complement');
+    const reference = document.getElementById('reference');
+    const paymentMethod = document.getElementById('paymentMethod');
+    const summaryItem = document.getElementById('summaryItem');
+    const summaryAddons = document.getElementById('summaryAddons');
+    const summaryRemovals = document.getElementById('summaryRemovals');
+    const summaryRemovalsRow = document.getElementById('summaryRemovalsRow');
+    const summaryNotes = document.getElementById('summaryNotes');
+    const summaryQty = document.getElementById('summaryQty');
+    const summaryDelivery = document.getElementById('summaryDelivery');
+    const summaryPayment = document.getElementById('summaryPayment');
+    const summaryAddress = document.getElementById('summaryAddress');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const summaryMapText = document.getElementById('summaryMapText');
+    const sendOrderBtn = document.getElementById('sendOrderBtn');
+    const openAddressMapBtn = document.getElementById('openAddressMapBtn');
+    const tabsContainer = document.getElementById('tabsContainer');
+    const panelsContainer = document.getElementById('panelsContainer');
+    const addonsContainer = document.getElementById('addonsContainer');
+    const removeContainer = document.getElementById('removeContainer');
+    const addonsField = document.getElementById('addonsField');
+    const addonsMainLabel = document.getElementById('addonsMainLabel');
+    const removeField = document.getElementById('removeField');
+
+    let currentItem = {
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      basePrice: 0,
+      modalType: '',
+      included: [],
+      extraOption: null
+    };
+
+    let orderState = { quantity: 1, delivery: 'entrega' };
+
+    function formatBRL(value) {
+      return Number(value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function escapeAttr(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderBusiness() {
+      const b = APP_DATA.business;
+      document.title = b.pageTitle;
+      document.getElementById('pageTitle').textContent = b.pageTitle;
+      document.getElementById('pageDescription').setAttribute('content', b.pageDescription);
+      document.querySelector('meta[name="description"]').setAttribute('content', b.pageDescription);
+
+      document.getElementById('brandName').textContent = b.name;
+      document.getElementById('brandSubtitle').textContent = b.subtitle;
+      document.getElementById('brandLogo').src = b.logo;
+      document.getElementById('heroLogo').src = b.logo;
+      document.getElementById('brandLogo').alt = `Logo ${b.name}`;
+      document.getElementById('heroLogo').alt = `Logo central ${b.name}`;
+
+      document.getElementById('heroImage').src = b.heroImage;
+      document.getElementById('heroImage').alt = `Imagem principal ${b.name}`;
+      document.getElementById('heroTopLabel').textContent = b.heroTopLabel;
+      document.getElementById('heroTitle').textContent = b.heroTitle;
+      document.getElementById('heroDescription').textContent = b.heroDescription;
+
+      document.getElementById('menuSectionTitle').textContent = APP_DATA.menuIntro.title;
+      document.getElementById('menuSectionDescription').textContent = APP_DATA.menuIntro.description;
+      document.getElementById('stepsTitle').textContent = APP_DATA.stepsIntro.title;
+      document.getElementById('stepsDescription').textContent = APP_DATA.stepsIntro.description;
+      document.getElementById('aboutTitle').textContent = APP_DATA.about.title;
+      document.getElementById('aboutDescription').textContent = APP_DATA.about.description;
+      document.getElementById('locationTitle').textContent = b.locationTitle;
+      document.getElementById('locationDescription').textContent = b.locationDescription;
+      document.getElementById('ctaTitle').textContent = APP_DATA.cta.title;
+      document.getElementById('ctaDescription').textContent = APP_DATA.cta.description;
+      document.getElementById('footerName').textContent = b.name;
+      document.getElementById('footerAddress').textContent = b.address;
+      document.getElementById('footerInfo').textContent = b.footerInfo;
+
+      document.getElementById('mapsButton').href = b.mapsSearchLink;
+      document.getElementById('whatsButton').href = `https://wa.me/${b.whatsappNumber}`;
+      document.getElementById('mapEmbed').src = b.mapsEmbed;
+      document.getElementById('footerWhatsapp').href = `https://wa.me/${b.whatsappNumber}`;
+      document.getElementById('footerInstagram').href = b.instagram;
+      document.getElementById('footerWhatsapp').textContent = b.whatsappText;
+      document.getElementById('footerInstagram').textContent = b.instagramText;
+      document.getElementById('floatWhatsapp').href = `https://wa.me/${b.whatsappNumber}`;
+
+      const highlightsEl = document.getElementById('heroHighlights');
+      highlightsEl.innerHTML = b.highlightBadges.map(text => `<div class="hero-badge">${text}</div>`).join('');
+
+      const aboutHighlightsEl = document.getElementById('aboutHighlights');
+      aboutHighlightsEl.innerHTML = APP_DATA.about.highlights.map(item => `
+        <div class="info-item"><strong>${item.title}</strong><span>${item.text}</span></div>
+      `).join('');
+
+      const locationInfoEl = document.getElementById('locationInfo');
+      locationInfoEl.innerHTML = APP_DATA.locationInfo.map(item => `
+        <div class="info-item">
+          <strong>${item.title}</strong>
+          ${item.link
+            ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.text}</a>`
+            : `<span>${item.text}</span>`
+          }
+        </div>
+      `).join('');
+
+      const stepsContainer = document.getElementById('stepsContainer');
+      stepsContainer.innerHTML = APP_DATA.steps.map(step => `
+        <article class="flow-card reveal">
+          <div class="flow-step">${step.number}</div>
+          <h3>${step.title}</h3>
+          <p>${step.text}</p>
+        </article>
+      `).join('');
+    }
+
+    function renderCategories() {
+      tabsContainer.innerHTML = APP_DATA.categories.map((cat, index) => `
+        <button class="tab-btn ${index === 0 ? 'active' : ''}" data-tab="${cat.id}">${cat.label}</button>
+      `).join('');
+
+      panelsContainer.innerHTML = APP_DATA.categories.map((cat, index) => `
+        <div class="catalog-panel ${index === 0 ? 'active' : ''}" id="tab-${cat.id}">
+          <div class="catalog-grid ${cat.grid === '2' ? 'two-cols' : ''}">
+            ${cat.items.map(item => `
+              <article class="product-card reveal">
+                <div class="product-image ${cat.grid === '2' ? 'tall' : ''}">
+                  <span class="product-tag">${item.tag}</span>
+                  <img src="${item.image}" alt="${item.name}" />
+                </div>
+                <div class="product-body">
+                  <h3>${item.name}</h3>
+                  <p>${item.description}</p>
+                  <div class="price">${formatBRL(item.price)}</div>
+                  <button
+                    class="btn btn-primary open-quick-order"
+                    type="button"
+                    data-name="${escapeAttr(item.name)}"
+                    data-price="${item.price}"
+                    data-category="${escapeAttr(item.category)}"
+                    data-image="${escapeAttr(item.image)}"
+                    data-description="${escapeAttr(item.description)}"
+                    data-modal-type="${escapeAttr(item.modalType)}"
+                    data-included="${escapeAttr((item.included || []).join('|'))}"
+                    data-extra-name="${escapeAttr(item.extraOption ? item.extraOption.name : '')}"
+                    data-extra-price="${item.extraOption ? item.extraOption.price : 0}"
+                  >Adicionar</button>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function buildOptionSection(section) {
+      if (section.type === 'static') {
+        return `
+          <div class="option-section">
+            <h5>${section.title}</h5>
+            ${section.note ? `<div class="option-section-note">${section.note}</div>` : ''}
+            <div class="static-list">
+              ${section.items.map(item => `<div class="static-chip">${item}</div>`).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="option-section">
+          <h5>${section.title}</h5>
+          ${section.note ? `<div class="option-section-note">${section.note}</div>` : ''}
+          <div class="options-grid">
+            ${section.items.map(item => `
+              <div class="option-chip">
+                <label>
+                  <input
+                    type="${section.inputType}"
+                    class="option-input"
+                    name="${section.groupName || ''}"
+                    value="${escapeAttr(item.name)}"
+                    data-price="${item.price || 0}"
+                  />
+                  ${item.name}
+                </label>
+                <strong>+ ${formatBRL(item.price || 0)}</strong>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderModalOptions() {
+      let sections = [];
+
+      if (currentItem.modalType === 'marmita-pronta') {
+        sections = [
+          {
+            type: 'static',
+            title: 'Essa marmita já vai com',
+            note: 'Essa composição já faz parte da marmita pronta.',
+            items: currentItem.included
+          },
+          {
+            type: 'input',
+            title: 'Adicionais extras',
+            note: 'Escolha somente uma opção de dobra, se desejar.',
+            inputType: 'radio',
+            groupName: 'extra-protein',
+            items: currentItem.extraOption ? [currentItem.extraOption] : []
+          },
+          {
+            type: 'input',
+            title: 'Bebidas',
+            inputType: 'checkbox',
+            groupName: 'drinks',
+            items: APP_DATA.beverageOptions
+          }
+        ];
+      }
+
+      if (currentItem.modalType === 'monte-marmita') {
+        sections = [
+          {
+            type: 'input',
+            title: 'Acompanhamentos',
+            note: 'Escolha os acompanhamentos da sua marmita.',
+            inputType: 'checkbox',
+            groupName: 'accompaniments',
+            items: APP_DATA.monteMarmita.accompaniments
+          },
+          {
+            type: 'input',
+            title: 'Escolha sua carne',
+            note: 'Selecione apenas uma carne.',
+            inputType: 'radio',
+            groupName: 'main-protein',
+            items: APP_DATA.monteMarmita.proteins
+          },
+          {
+            type: 'input',
+            title: 'Adicionais extras',
+            note: 'Se quiser, escolha apenas uma opção de dobra.',
+            inputType: 'radio',
+            groupName: 'extra-protein',
+            items: APP_DATA.monteMarmita.extraProteins
+          },
+          {
+            type: 'input',
+            title: 'Bebidas',
+            inputType: 'checkbox',
+            groupName: 'drinks',
+            items: APP_DATA.beverageOptions
+          }
+        ];
+      }
+
+      if (currentItem.modalType === 'prato-feito') {
+        sections = [
+          {
+            type: 'static',
+            title: 'Esse prato já vai com',
+            note: 'Essa composição já faz parte do prato feito.',
+            items: currentItem.included
+          },
+          {
+            type: 'input',
+            title: 'Bebidas',
+            note: 'Nos pratos feitos, os adicionais ficam apenas nas bebidas.',
+            inputType: 'checkbox',
+            groupName: 'drinks',
+            items: APP_DATA.beverageOptions
+          }
+        ];
+      }
+
+      if (currentItem.modalType === 'bebida') {
+        sections = [];
+      }
+
+      addonsMainLabel.textContent = sections.length ? 'Personalização do pedido' : 'Adicionais';
+      addonsField.style.display = 'grid';
+      removeField.style.display = 'none';
+      removeContainer.innerHTML = '';
+
+      if (!sections.length) {
+        addonsContainer.innerHTML = `
+          <div class="option-section">
+            <h5>Sem adicionais</h5>
+            <div class="static-list">
+              <div class="static-chip">Esse item não possui adicionais. Basta revisar e enviar o pedido.</div>
+            </div>
+          </div>
+        `;
+      } else {
+        addonsContainer.innerHTML = sections
+          .filter(section => !section.items || section.items.length)
+          .map(buildOptionSection)
+          .join('');
+      }
+
+      document.querySelectorAll('.option-input').forEach(input => {
+        input.addEventListener('change', updateSummary);
+      });
+    }
+
+    function bindDynamicEvents() {
+      document.querySelectorAll('.tab-btn').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.catalog-panel').forEach(panel => panel.classList.remove('active'));
+          tab.classList.add('active');
+          const target = document.getElementById('tab-' + tab.dataset.tab);
+          if (target) target.classList.add('active');
+        });
+      });
+
+      document.querySelectorAll('.open-quick-order').forEach(button => {
+        button.addEventListener('click', () => openModalFromButton(button));
+      });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    function getSelectedOptions() {
+      return Array.from(document.querySelectorAll('.option-input'))
+        .filter(input => input.checked)
+        .map(input => ({
+          name: input.value,
+          price: Number(input.dataset.price || 0)
+        }));
+    }
+
+    function getSelectedRemovals() {
+      return [];
+    }
+
+    function getAddressString() {
+      const parts = [];
+      if (street.value.trim()) parts.push(street.value.trim());
+      if (number.value.trim()) parts.push('Nº ' + number.value.trim());
+      if (district.value.trim()) parts.push(district.value.trim());
+      if (complement.value.trim()) parts.push('Comp.: ' + complement.value.trim());
+      if (reference.value.trim()) parts.push('Ref.: ' + reference.value.trim());
+      return parts.join(', ');
+    }
+
+    function getMapsLinkForAddress() {
+      const address = getAddressString();
+      if (!address) return '';
+      return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address + ', Goiânia - GO');
+    }
+
+    function calculateTotal() {
+      const optionsTotal = getSelectedOptions().reduce((acc, option) => acc + option.price, 0);
+      return (currentItem.basePrice + optionsTotal) * orderState.quantity;
+    }
+
+    function updateSummary() {
+      const options = getSelectedOptions();
+      const removals = getSelectedRemovals();
+      const total = calculateTotal();
+      const addressString = getAddressString();
+
+      summaryItem.textContent = currentItem.name ? currentItem.name + ' • ' + formatBRL(currentItem.basePrice) : '-';
+      summaryAddons.textContent = options.length
+        ? options.map(option => option.name + ' (' + formatBRL(option.price) + ')').join(', ')
+        : 'Nenhum adicional';
+      summaryRemovals.textContent = removals.length ? removals.join(', ') : 'Nada removido';
+      summaryRemovalsRow.style.display = removals.length ? 'flex' : 'none';
+      summaryNotes.textContent = orderNotes.value.trim() ? orderNotes.value.trim() : 'Sem observações';
+      summaryQty.textContent = String(orderState.quantity);
+      summaryDelivery.textContent = 'Entrega';
+      summaryPayment.textContent = paymentMethod.value;
+      summaryAddress.textContent = addressString || 'Preencha o endereço para entrega';
+      summaryTotal.textContent = formatBRL(total);
+      summaryMapText.textContent = 'Revise os dados de entrega e pagamento antes de enviar seu pedido.';
+    }
+
+    function resetFormFields() {
+      addonsContainer.innerHTML = '';
+      removeContainer.innerHTML = '';
+      orderNotes.value = '';
+      customerName.value = '';
+      customerPhone.value = '';
+      street.value = '';
+      number.value = '';
+      district.value = '';
+      complement.value = '';
+      reference.value = '';
+      orderState.quantity = 1;
+      qtyValue.textContent = '1';
+      orderState.delivery = 'entrega';
+      addressFields.style.display = 'block';
+      paymentMethod.value = 'Pix';
+      deliveryButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.delivery === 'entrega'));
+      summaryRemovalsRow.style.display = 'none';
+    }
+
+    function openModalFromButton(button) {
+      currentItem = {
+        name: button.dataset.name || '',
+        description: button.dataset.description || '',
+        image: button.dataset.image || '',
+        category: button.dataset.category || '',
+        basePrice: Number(button.dataset.price || 0),
+        modalType: button.dataset.modalType || '',
+        included: (button.dataset.included || '').split('|').filter(Boolean),
+        extraOption: button.dataset.extraName
+          ? { name: button.dataset.extraName, price: Number(button.dataset.extraPrice || 0) }
+          : null
+      };
+
+      resetFormFields();
+      renderModalOptions();
+
+      modalItemName.textContent = currentItem.name;
+      modalItemDescription.textContent = currentItem.description;
+      modalItemImage.src = currentItem.image;
+      modalItemImage.alt = currentItem.name;
+      selectedItem.value = currentItem.name;
+      selectedCategory.value = currentItem.category;
+
+      updateSummary();
+      quickModal.classList.add('open');
+      quickModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeOrderModal() {
+      quickModal.classList.remove('open');
+      quickModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function buildWhatsAppMessage() {
+      const b = APP_DATA.business;
+      const options = getSelectedOptions();
+      const removals = getSelectedRemovals();
+      const addressString = getAddressString();
+      const mapsLink = getMapsLinkForAddress();
+      const total = calculateTotal();
+
+      const lines = [];
+      lines.push(`*Pedido - ${b.name}*`);
+      lines.push('');
+      lines.push('*Cliente:* ' + (customerName.value.trim() || 'Não informado'));
+      lines.push('*Telefone:* ' + (customerPhone.value.trim() || 'Não informado'));
+      lines.push('');
+      lines.push('*Item:* ' + currentItem.name);
+      lines.push('*Categoria:* ' + currentItem.category);
+      lines.push('*Quantidade:* ' + orderState.quantity);
+      lines.push('*Preço base:* ' + formatBRL(currentItem.basePrice));
+
+      if (currentItem.included.length) {
+        lines.push('*Composição inclusa:* ' + currentItem.included.join(', '));
+      }
+
+      lines.push('*Adicionais:* ' + (options.length ? options.map(option => option.name + ' (' + formatBRL(option.price) + ')').join(', ') : 'Nenhum'));
+      if (removals.length) {
+        lines.push('*Remover:* ' + removals.join(', '));
+      }
+      lines.push('*Observações:* ' + (orderNotes.value.trim() || 'Sem observações'));
+      lines.push('');
+      lines.push('*Forma de entrega:* Entrega');
+      lines.push('*Forma de pagamento:* ' + paymentMethod.value);
+      lines.push('*Endereço:* ' + (addressString || 'Não informado'));
+      if (mapsLink) lines.push('*Maps do endereço:* ' + mapsLink);
+      lines.push('');
+      lines.push('*Total do pedido:* ' + formatBRL(total));
+      lines.push('');
+      lines.push('Aguardando confirmação.');
+      return lines.join('\n');
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+
+    menuToggle?.addEventListener('click', () => mobilePanel.classList.toggle('open'));
+    document.querySelectorAll('.mobile-links a').forEach(link => {
+      link.addEventListener('click', () => mobilePanel.classList.remove('open'));
+    });
+
+    closeModal.addEventListener('click', closeOrderModal);
+    quickModal.addEventListener('click', (event) => {
+      if (event.target === quickModal) closeOrderModal();
+    });
+
+    [orderNotes, customerName, customerPhone, street, number, district, complement, reference].forEach(el => {
+      el.addEventListener('input', updateSummary);
+    });
+
+    paymentMethod.addEventListener('change', updateSummary);
+
+    decreaseQty.addEventListener('click', () => {
+      if (orderState.quantity > 1) {
+        orderState.quantity -= 1;
+        qtyValue.textContent = String(orderState.quantity);
+        updateSummary();
+      }
+    });
+
+    increaseQty.addEventListener('click', () => {
+      orderState.quantity += 1;
+      qtyValue.textContent = String(orderState.quantity);
+      updateSummary();
+    });
+
+    deliveryButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        orderState.delivery = 'entrega';
+        deliveryButtons.forEach(btn => btn.classList.toggle('active', btn === button));
+        addressFields.style.display = 'block';
+        updateSummary();
+      });
+    });
+
+    sendOrderBtn.addEventListener('click', () => {
+      const url = 'https://wa.me/' + APP_DATA.business.whatsappNumber + '?text=' + encodeURIComponent(buildWhatsAppMessage());
+      window.open(url, '_blank');
+    });
+
+    openAddressMapBtn.addEventListener('click', () => {
+      const mapsLink = getMapsLinkForAddress();
+      if (!mapsLink) {
+        alert('Preencha o endereço para abrir no Google Maps.');
+        return;
+      }
+      window.open(mapsLink, '_blank');
+    });
+
+    renderBusiness();
+    renderCategories();
+    bindDynamicEvents();
+  </script>
+
+</body>
+</html>
